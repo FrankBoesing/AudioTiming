@@ -94,8 +94,6 @@ void AudioTiming::init(void) {
     if (TCD->SOFF == 4 && TCD->DOFF == 8) DMACh_pwm = x;
   }
 
-  usePin(23);//Default Pin (I2S) is PIN23
-
   initialized = 1;
 
 #if defined(DEBUG)
