@@ -116,6 +116,24 @@ void AudioTiming::usePin(const uint8_t pin) {
   pinnum = pin;
 }
 
+bool enableI2S_FSPin(const uint8_t pin) {
+//For use with SPDI, ADAT...etc which don't need a FrameSync and don't enable it.
+#if defined(__MK20DX128__) || defined(__MK20DX256__)
+  if (pin == 4) CORE_PIN23_CONFIG = PORT_PCR_MUX(6);
+	else if (pin == 23) CORE_PIN23_CONFIG = PORT_PCR_MUX(6);
+	else if (pin == 25) CORE_PIN23_CONFIG = PORT_PCR_MUX(4);
+  else return false;		
+#elif defined(__MK64FX512__) || defined(__MK66FX1M0__)
+  if (pin == 4) CORE_PIN4_CONFIG = PORT_PCR_MUX(6);	
+	else if (pin == 23) CORE_PIN23_CONFIG = PORT_PCR_MUX(6);
+	else if (pin == 30) CORE_PIN30_CONFIG = PORT_PCR_MUX(4);
+	else if (pin == 57) CORE_PIN57_CONFIG = PORT_PCR_MUX(4);
+  else return false;	
+#endif	
+	// todo: call usePin(pin) here? or not?
+	return true;
+}
+
 void AudioTiming::configurePDB(void) {
 
   if (!((SIM_SCGC6 & SIM_SCGC6_PDB) &&
@@ -154,8 +172,14 @@ void AudioTiming::configurePDB(void) {
   pdbdma.enable();
 }
 
+
+void AudioTiming::configurePWM(void) {
+}
+
 void AudioTiming::begin(void)
 {
+	if (!initialized) return;
   configurePDB();
+	configurePWM();
 }
 

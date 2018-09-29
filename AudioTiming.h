@@ -31,21 +31,25 @@
 #ifndef audio_timing_h_
 #define audio_timing_h_
 
-
-#include <Audio.h>
 #include <DMAChannel.h>
 
+#if defined(__MK20DX128__) || defined(__MK20DX256__)
+#define I2S_FS_BACKSIDEPIN 25		
+#elif defined(__MK64FX512__) || defined(__MK66FX1M0__)
+#define I2S_FS_BACKSIDEPIN 57 
+#endif 
 
 class AudioTiming
 {
 	public:
 	  void init(void);		
 		void usePin(uint8_t pin);
-		//void enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
+		bool enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
 		void begin(void);
 		
 	private:
 	  void configurePDB(void);
+		void configurePWM(void);
 		
 	  DMAChannel pdbdma;
 	  int8_t DMACh_pwm  = -1;
