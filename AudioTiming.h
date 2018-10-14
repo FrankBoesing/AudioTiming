@@ -1,5 +1,5 @@
 /* AudioTiming Library for Teensy 3.X
-/* Code is placed under the MIT license
+ * Code is placed under the MIT license
  * Copyright (c) 2018 Frank Bösing
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -31,6 +31,7 @@
 #ifndef audio_timing_h_
 #define audio_timing_h_
 
+#include <Audio.h>
 #include <DMAChannel.h>
 
 #if defined(__MK20DX128__) || defined(__MK20DX256__)
@@ -45,16 +46,18 @@ class AudioTiming
 	  void init(void);		
 		void usePin(uint8_t pin);
 		bool enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
+		double readI2S_freq(void);
+		bool setI2S_freq(float fsamp);
 		void begin(void);
 		
-	private:
+	protected:
 	  void configurePDB(void);
 		void configurePWM(void);
-		
+    uint32_t I2S_dividers( float fsamp, uint32_t nbits, uint32_t TCR2_DIV );	  
+
 	  DMAChannel pdbdma;
-	  int8_t DMACh_pwm  = -1;
 	  int8_t initialized = 0;
-	  uint8_t pinnum = 255;	 
+	  uint8_t pinnum = 255;
 };
 
 
