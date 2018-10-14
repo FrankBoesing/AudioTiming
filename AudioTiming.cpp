@@ -273,9 +273,11 @@ void AudioTiming::fakeI2S(void)
   I2S0_TCR5 = I2S_TCR5_WNW(31) | I2S_TCR5_W0W(31) | I2S_TCR5_FBT(31);
   I2S0_TCSR |= I2S_TCSR_TE | I2S_TCSR_BCE; // TX clock enable
 
+#if 0
   CORE_PIN23_CONFIG = PORT_PCR_MUX(6); // pin 23, PTC2, I2S0_TX_FS (LRCLK)
   CORE_PIN9_CONFIG  = PORT_PCR_MUX(6); // pin  9, PTC3, I2S0_TX_BCLK
   CORE_PIN11_CONFIG = PORT_PCR_MUX(6); // pin 11, PTC6, I2S0_MCLK
+#endif	
 }
 	
 void AudioTiming::begin(void)
