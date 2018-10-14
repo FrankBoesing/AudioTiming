@@ -244,6 +244,40 @@ bool AudioTiming::setI2S_freq(float fsamp)
   return false;
 }
 
+#ifndef MCLK_SRC
+#if F_CPU >= 20000000
+  #define MCLK_SRC  3  // the PLL
+#else
+  #define MCLK_SRC  0  // system clock
+#endif
+#endif
+
+void AudioTiming::fakeI2S(void)
+{
+  SIM_SCGC6 |= SIM_SCGC6_I2S;
+	
+	const int tcr2_div = 1;
+	uint32_t MDR = I2S_dividers(AUDIO_SAMPLE_RATE_EXACT, 64, tcr2_div);
+	
+  // enable MCLK output
+  I2S0_MCR = I2S_MCR_MICS(MCLK_SRC) | I2S_MCR_MOE;
+  while (I2S0_MCR & I2S_MCR_DUF) ;
+  I2S0_MDR = MDR;
+
+  // configure transmitter
+  I2S0_TMR = 0;
+  I2S0_TCR1 = I2S_TCR1_TFW(1);
+  I2S0_TCR2 = I2S_TCR2_SYNC(0) | I2S_TCR2_BCP | I2S_TCR2_MSEL(1) | I2S_TCR2_BCD | I2S_TCR2_DIV(tcr2_div);
+  I2S0_TCR3 = I2S_TCR3_TCE;
+  I2S0_TCR4 = I2S_TCR4_FRSZ(1) | I2S_TCR4_SYWD(31) | I2S_TCR4_MF | I2S_TCR4_FSE | I2S_TCR4_FSP | I2S_TCR4_FSD;
+  I2S0_TCR5 = I2S_TCR5_WNW(31) | I2S_TCR5_W0W(31) | I2S_TCR5_FBT(31);
+  I2S0_TCSR |= I2S_TCSR_TE | I2S_TCSR_BCE; // TX clock enable
+
+  CORE_PIN23_CONFIG = PORT_PCR_MUX(6); // pin 23, PTC2, I2S0_TX_FS (LRCLK)
+  CORE_PIN9_CONFIG  = PORT_PCR_MUX(6); // pin  9, PTC3, I2S0_TX_BCLK
+  CORE_PIN11_CONFIG = PORT_PCR_MUX(6); // pin 11, PTC6, I2S0_MCLK
+}
+	
 void AudioTiming::begin(void)
 {
   if (!initialized) return;

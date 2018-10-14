@@ -48,6 +48,7 @@ class AudioTiming
     bool enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
     double readI2S_freq(void);
     bool setI2S_freq(float fsamp);
+    void fakeI2S(void); //initializes a "fake" I2S vor clockgeneration
     void begin(void);
 
   protected:
