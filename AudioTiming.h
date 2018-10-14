@@ -1,27 +1,27 @@
 /* AudioTiming Library for Teensy 3.X
- * Code is placed under the MIT license
- * Copyright (c) 2018 Frank Bösing
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+   Code is placed under the MIT license
+   Copyright (c) 2018 Frank Bösing
+
+   Permission is hereby granted, free of charge, to any person obtaining
+   a copy of this software and associated documentation files (the
+   "Software"), to deal in the Software without restriction, including
+   without limitation the rights to use, copy, modify, merge, publish,
+   distribute, sublicense, and/or sell copies of the Software, and to
+   permit persons to whom the Software is furnished to do so, subject to
+   the following conditions:
+
+   The above copyright notice and this permission notice shall be
+   included in all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+*/
 
 #include "Arduino.h"
 #if !defined(KINETISK)
@@ -35,29 +35,29 @@
 #include <DMAChannel.h>
 
 #if defined(__MK20DX128__) || defined(__MK20DX256__)
-#define I2S_FS_BACKSIDEPIN 25		
+#define I2S_FS_BACKSIDEPIN 25
 #elif defined(__MK64FX512__) || defined(__MK66FX1M0__)
-#define I2S_FS_BACKSIDEPIN 57 
-#endif 
+#define I2S_FS_BACKSIDEPIN 57
+#endif
 
 class AudioTiming
 {
-	public:
-	  void init(void);		
-		void usePin(uint8_t pin);
-		bool enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
-		double readI2S_freq(void);
-		bool setI2S_freq(float fsamp);
-		void begin(void);
-		
-	protected:
-	  void configurePDB(void);
-		void configurePWM(void);
-    uint32_t I2S_dividers( float fsamp, uint32_t nbits, uint32_t TCR2_DIV );	  
+  public:
+    void init(void);
+    void usePin(uint8_t pin);
+    bool enableI2S_FSPin(uint8_t pin); // enable I2s Framesync Pin
+    double readI2S_freq(void);
+    bool setI2S_freq(float fsamp);
+    void begin(void);
 
-	  DMAChannel pdbdma;
-	  int8_t initialized = 0;
-	  uint8_t pinnum = 255;
+  protected:
+    void configurePDB(void);
+    void configurePWM(void);
+    uint32_t I2S_dividers( float fsamp, uint32_t nbits, uint32_t TCR2_DIV );
+
+    DMAChannel pdbdma;
+    int8_t initialized = 0;
+    uint8_t pinnum = 255;
 };
 
 

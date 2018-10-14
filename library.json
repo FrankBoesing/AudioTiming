@@ -1,0 +1,24 @@
+{
+  "name": "AudioTiming",
+  "frameworks": "Arduino",
+  "platforms": "Teensy",
+  "keywords": "sound, audio, FFT, filter, effect",
+  "description": "Teensy Audio Library extended Timing",
+  "url": "https://github.com/FrankBoesing/AudioTiming",
+  "version": "0.2",
+  "authors":
+  {
+    "name": "Frank Boesing",
+    "maintainer": true
+  },
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/FrankBoesing/AudioTiming"
+  },
+  "dependencies":
+  {
+    "name": "Audio",
+    "frameworks": "arduino"
+  }
+}

@@ -1,0 +1,6 @@
+AudioTiming	KEYWORD2
+usePin	KEYWORD2
+enableI2S_FSPin	KEYWORD2
+readI2S_freq	KEYWORD2
+readI2S_freq	KEYWORD2
+
